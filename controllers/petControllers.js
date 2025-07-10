@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const petModel = require("../models/pet");
-const { json } = require("body-parser");
+// const { json } = require("body-parser");
 const petController = {};
 
 petController.buildHome = async function (req, res) {
