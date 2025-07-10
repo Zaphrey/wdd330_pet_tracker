@@ -28,7 +28,9 @@ app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
 app.use("/", (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://wdd330-pet-tracker.onrender.com");
+    res.setHeader("Access-Control-Allow-Origin", "https://wdd330-pet-tracker.onrender.com");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 })
 
