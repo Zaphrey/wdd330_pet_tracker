@@ -1,7 +1,12 @@
 const app = require("express");
-const { buildHome} = require("../controllers/accountController");
+const { buildHome, createAccount, buildRegister, buildLogin, signIn } = require("../controllers/accountController");
+const { checkLogin } = require("../utilities");
 const router = app.Router();
 
-router.get("/", buildHome)
+router.get("/", checkLogin, buildHome);
+router.get("/register", buildRegister);
+router.get("/login", buildLogin);
+router.post("/login", signIn);
+router.post("/create", createAccount);
 
 module.exports =  router

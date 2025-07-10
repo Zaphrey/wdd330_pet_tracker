@@ -1,0 +1,14 @@
+<div id="account-form">
+    <form action="/pets/add" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Add Pet</legend>
+            <label>Image<input type="file" id="image" name="image"></label>
+            <label>Name<input type="text" id="name" name="name"></label>
+            <label>Breed<input type="text" id="breed" name="breed"></label>
+            <label>Age<input type="number" id="age" name="age"></label>
+            <label>Weight<input type="number" id="weight" name="weight"></label>
+            <button type="submit">Add My Pet</button>
+        </fieldset>
+    </form>
+    <script src="/js/addPet.js"></script>
+</div>

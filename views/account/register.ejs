@@ -1,0 +1,27 @@
+<div id="account-form">
+    <%- include("../partials/signinNav") %>
+    <form action="/account/create" method="post">
+        <fieldset>
+            <legend>Register Account</legend>
+            <p><span class="required-field"> </span>Indicates a required field</p>
+            <label>
+                <span class="required-field"> </span>First name</span>
+                <input id="fname" name="fname" type="text" required>
+            </label>
+            <label>
+                <span class="required-field"> </span>Last name
+                <input id="lname" name="lname" type="text" required>
+            </label>
+            <label>
+                <span class="required-field"> </span>Email
+                <input id="email" name="email" type="text" required>
+            </label>
+            <label>
+                <span class="required-field"> </span>Password
+                <input id="password" name="password" type="text" required>
+            </label>
+            <button type="submit">Create My Account</button>
+        </fieldset>
+    </form>
+    <script src="/js/register.js"></script>
+</div>

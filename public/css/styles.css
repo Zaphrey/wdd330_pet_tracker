@@ -8,6 +8,7 @@
     --secondary-light: rgb(104, 96, 76);
     --secondary-dark: #3d3a32;
     --text-color: #1e2022; 
+    --required: #7a2a2a;
 }
 
 * {
@@ -23,6 +24,9 @@ body {
 
 #wrapper {
     background-color: var(--background-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -34,6 +38,9 @@ footer {
     color: var(--background-color);
     height: 5em;
     background-color: var(--primary-light);
+    margin-top: auto;
+    width: 100%;
+    max-width: 1500px;
 }
 
 nav {
@@ -146,10 +153,136 @@ nav {
     background-color: var(--secondary-dark);
 }
 
-@media screen and (min-width: 1500px) {
+input, button {
+    margin-bottom: 1em;
+    display: block;
+    padding: 0.5em;
+    width: 32ch;
+    border: 2px solid var(--text-color);
+    border-radius: 4px;
+}
+
+#account-nav {
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+#account-nav a {
+    background-color: var(--secondary-light);
+    border: 2px solid var(--text-color);
+    padding: 0.25em;
+    border-radius: 4px;
+    color: var(--background-color);
+    width: 10ch;
+    text-align: center;
+    margin: 1em;
+}
+
+#account-nav a:hover {
+    background-color: var(--secondary-dark);
+}
+
+label, fieldset>p, legend {
+    color: var(--background-color);
+}
+
+#account-form {
+    margin: auto;
+}
+
+legend {
+    background-color: var(--secondary-light);
+    border: 2px solid var(--text-color);
+    padding: 0.25em;
+    border-radius: calc(16px - 0.5em);
+}
+
+button {
+    width: 24ch;
+    padding: 0.5em;
+}
+
+form {
+    background-color: var(--secondary-dark);
+    border-radius: 16px;
+    padding: 0.5em;
+}
+
+fieldset {
+    background-color: var(--secondary-light);
+    border-radius: calc(16px - 0.5em);
+    border: 2px solid var(--text-color);
+    margin: 0;
+}
+
+.required-field::before { 
+    content: "*";
+    color: var(--background-color);
+}
+
+/* .required-field {
+    text
+} */
+
+body {
+    min-height: 100vh;
+}
+
+.hide, #pet-cards.hide {
+    /* display: none; */
+    opacity: 0;
+}
+
+@keyframes fade-card-in {
+    0%, 25% { 
+        opacity: 0; 
+        margin-top: 5em;
+    }
+    100% { 
+        opacity: 1; 
+        margin-top: 1em;
+    }
+}
+
+#pet-cards {
+    /* display: inline-block; */
+    text-align: center;
+    margin: 1em auto;
+    width: 60%;
+}
+
+.card-fade-in {
+    animation: fade-card-in 0.5s ease-in-out forwards;
+}
+
+.pet-card {
+    display: inline-block;
+    padding: 1em;
+    background-color: var(--background-color-shadow);
+    width: 90%;
+}
+
+.pet-card img {
+    width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+    #pet-cards {
+        /* display: inline-block; */
+        text-align: center;
+        margin: 1em auto;
+        column-count: 2;
+        column-gap: 1em;   
+    }
+
     body {
-        background-color: #1e2022;
         margin: auto;
         max-width: 1500px;
+        min-height: 100vh;
+    }
+
+    #account-form {
+        max-width: 600px;
     }
 }

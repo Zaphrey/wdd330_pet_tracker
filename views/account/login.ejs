@@ -1,0 +1,19 @@
+<div id="account-form">
+    <%- include("../partials/signinNav") %>
+    <form action="/account/login" method="post">
+        <fieldset>
+            <legend>Login</legend>
+            <p><span class="required-field"> </span>Indicates a required field</p>
+            <label>
+                <span class="required-field"> </span>Email
+                <input id="email" name="email" type="text" required>
+            </label>
+            <label>
+                <span class="required-field"> </span>Password
+                <input id="password" name="password" type="text" required>
+            </label>
+            <button type="submit">Log In</button>
+        </fieldset>
+    </form>
+    <script src="/js/login.js"></script>
+</div>
