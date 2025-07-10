@@ -21,7 +21,7 @@ baseController.buildLogin = async function (req, res) {
 baseController.createAccount = async function (req, res) {
     const { fname, lname, email, password } = req.body;
     const result = await registerAccount(fname, lname, email, password);
-    
+    console.log(result)
     if (typeof(result) === "string") {
         return res.status(400).send("A user with that email already exists!");
     }
