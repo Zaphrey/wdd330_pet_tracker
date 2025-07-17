@@ -34,14 +34,14 @@ CREATE TABLE IF NOT EXISTS public.vaccinated (
     CONSTRAINT vaccinated_pk PRIMARY KEY (vaccinated_id)
 );
 
-ALTER TABLE IF EXISTS public.pets
-ADD CONSTRAINT fk_vaccinated FOREIGN KEY (pet_vaccinated_id) REFERENCES public.vaccinated(vaccinated_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION;
+-- ALTER TABLE IF EXISTS public.pets
+-- ADD CONSTRAINT fk_vaccinated FOREIGN KEY (pet_vaccinated_id) REFERENCES public.vaccinated(vaccinated_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION;
 
-ALTER TABLE IF EXISTS public.vaccinated
-ADD CONSTRAINT vaccine_fk FOREIGN KEY (vaccine_id) REFERENCES public.vaccine(vaccine_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION;
+-- ALTER TABLE IF EXISTS public.vaccinated
+-- ADD CONSTRAINT vaccine_fk FOREIGN KEY (vaccine_id) REFERENCES public.vaccine(vaccine_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION;
 
-ALTER TABLE IF EXISTS public.account
-ADD CONSTRAINT un_account_email UNIQUE (account_email);
+-- ALTER TABLE IF EXISTS public.account
+-- ADD CONSTRAINT un_account_email UNIQUE (account_email);
 
 INSERT INTO public.vaccine (vaccine_name) VALUES 
     ('Rabies'), 
@@ -71,5 +71,9 @@ ADD IF NOT EXISTS pet_weight INT NOT NULL;
 ALTER TABLE IF EXISTS public.pets 
 ALTER COLUMN pet_vaccinated_id DROP NOT NULL;
 
-ALTER TABLE IF EXISTS public.image
-RENAME image_path TO image_name;
+-- ALTER TABLE IF EXISTS public.image
+-- RENAME image_path TO image_name;
+
+
+ALTER TABLE IF EXISTS public.vaccinated DROP CONSTRAINT pet_fk,
+ADD CONSTRAINT pet_fk FOREIGN KEY (pet_id) REFERENCES public.pets(pet_id) ON DELETE CASCADE;

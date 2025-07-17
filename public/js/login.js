@@ -23,7 +23,7 @@ button.addEventListener("click", async e =>  {
     };
 
     const response = await fetch(`/account/login`, options);
-    console.log(response)
+
     const result = await response.json();
     
     if (response.ok && response.status === 202) {

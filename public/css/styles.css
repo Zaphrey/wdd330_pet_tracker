@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 :root {
     --background-color: #e9f1f7;
     --background-color-shadow: #99acb9;
     --primary-light: rgb(102, 106, 134);
     --primary-dark: #4b4e6d;
+    --primary-dark-second: #3e415e;
     --secondary-light: rgb(104, 96, 76);
     --secondary-dark: #3d3a32;
     --text-color: #1e2022; 
@@ -30,7 +32,6 @@ body {
 }
 
 header {
-    padding: 1em;
     background-color: var(--background-color);
 }
 
@@ -40,12 +41,11 @@ footer {
     background-color: var(--primary-light);
     margin-top: auto;
     width: 100%;
-    max-width: 1500px;
 }
 
 nav {
     background-color: var(--primary-light);
-    width: 100%;
+    width: 100vw;
     grid-template-columns: 1fr 1fr;
     position: relative;
     display: grid;
@@ -61,10 +61,15 @@ nav {
     height: 20px;
 }
 
-#icon, #icon h1, #icon-svg {
-    /* color: white; */
-    filter: brightness(0%);
+#nav-logo, #nav-logo h1, #nav-logo-svg {
+    color: white;
+    filter: brightness(100%);
     display: inline;
+}
+
+#nav-logo {
+    padding: 0.5em;
+    background-color: var(--primary-dark-second);
 }
 
 #nav-buttons-left {
@@ -157,9 +162,28 @@ input, button {
     margin-bottom: 1em;
     display: block;
     padding: 0.5em;
+    max-width: 60%;
     width: 32ch;
     border: 2px solid var(--text-color);
     border-radius: 4px;
+}
+
+button {
+    cursor: pointer;
+}
+
+select {
+    display: block;
+    padding: 0.5em;
+    max-width: 60%;
+    width: 32ch;
+    border: 2px solid var(--text-color);
+    border-radius: 4px;
+}
+
+label {
+    width: 32ch;
+    max-width: 60%;
 }
 
 #account-nav {
@@ -189,6 +213,7 @@ label, fieldset>p, legend {
 
 #account-form {
     margin: auto;
+    width: 100%;
 }
 
 legend {
@@ -205,7 +230,6 @@ button {
 
 form {
     background-color: var(--secondary-dark);
-    border-radius: 16px;
     padding: 0.5em;
 }
 
@@ -230,7 +254,7 @@ body {
 }
 
 .hide, #pet-cards.hide {
-    /* display: none; */
+    display: none;
     opacity: 0;
 }
 
@@ -246,10 +270,9 @@ body {
 }
 
 #pet-cards {
-    /* display: inline-block; */
     text-align: center;
     margin: 1em auto;
-    width: 60%;
+    width: 100%;
 }
 
 .card-fade-in {
@@ -258,31 +281,211 @@ body {
 
 .pet-card {
     display: inline-block;
-    padding: 1em;
-    background-color: var(--background-color-shadow);
-    width: 90%;
+    /* padding: 1em; */
+    background-color: var(--primary-light);
+    width: 100%;
+    border-radius: 1em;
+    overflow: hidden;
+    border: 2px solid var(--primary-dark);
+    padding: 0;
+}
+
+.pet-card p {
+    color: var(--background-color);
+}
+
+.pet-card label, .pet-card input {
+    padding: 0;
+    display: block;
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+}
+
+.pet-card label {
+    background-color: var(--primary-dark);
+    padding: 0.5em;
+}
+
+.pet-card input {
+    max-width: 32ch;
+    padding: 0.5em;
+    border: 2px solid var(--text-color);
+}
+
+.pet-card label:not(:last-child) {
+    border-top: 2px solid var(--primary-light);
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.pet-card input {
+    margin: 0;
 }
 
 .pet-card img {
     width: 100%;
 }
 
-@media screen and (min-width: 600px) {
+.card-top-bar {
+    position: relative;
+    padding: 0.5em;
+    background-color: var(--primary-light);
+    /* border: 2px solid var(--text-color); */
+}
+
+.card-top-bar p {
+    margin: 0;
+    text-align: left;
+}
+
+.card-top-bar button {
+    /* border: none; */
+    border-radius: 0;
+    border: none;
+    border-left: 2px solid var(--primary-dark);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 2;
+}
+
+.card-top-bar button:nth-child(2) {
+    right: calc(2.65em * 2);
+}
+
+#vaccination-section button {
+    width: 8em;
+    height: auto;
+    aspect-ratio: 3;
+    padding: 0;
+}
+
+select, option, input {
+    width: 32ch;
+    max-width: 60%;
+    background-color: var(--background-color);
+    font-family: "Roboto";
+}
+
+#vaccination-section span {
+    margin: 0.125em;
+}
+
+fieldset>fieldset {
+    margin-bottom: 1em;
+}
+
+/* #vaccination-section div {
+    position: relative;
+    background-color: var(--secondary-dark);
+    padding: 1em;
+    border-radius: calc(16px - 0.5em);
+} */
+
+.vaccine-label label, .vaccine-label label:nth-child(even), .vaccine-label label:not(:last-child), .vaccine-label input {
+    border: none;
+    background-color: transparent;
+    decoration;
+}
+
+.vaccine-label select, .accine-label option, .vaccine-label input {
+    margin-bottom: 0;
+    width: 100%;
+    background-color: var(--background-color);
+}
+
+.vaccine-label input {
+    width: 16ch;
+    max-width: 100%;
+    padding: 0.5em;
+    border: 2px solid var(--text-color);
+}
+
+.vaccine-label {
+    display: block;
+    grid-template-columns: 3fr 2fr;
+    background-color: var(--primary-dark);
+    border-top: 2px solid var(--primary-light);
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.vaccine-label label:first-child {
+    grid-column: 1 / 2;
+}
+
+.vaccine-label label:last-child {
+    grid-column: 2 / 3;
+}
+
+#vaccination-section div:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+#vaccination-section div button {
+    aspect-ratio: 1;
+    width: 3em;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+input.not-editable, select.not-editable {
+    appearance: none;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    color: var(--background-color);
+    font-size: medium;
+}
+
+@media screen and (min-width: 800px) {
+    form {
+        border-radius: 16px;
+    }
+
+    .vaccine-label {
+        display: grid;
+    }
+
     #pet-cards {
-        /* display: inline-block; */
+        text-align: center;
+        margin: 1em auto;
+        width: 30%;  
+    }
+
+    #pet-cards:has(>:nth-child(2)) {
         text-align: center;
         margin: 1em auto;
         column-count: 2;
         column-gap: 1em;   
+        width: 60%;
+    }
+
+    #pet-cards:only-child {
+        column-count: 1;    
+        column-gap: 1em;
+        width: 30%;
     }
 
     body {
         margin: auto;
-        max-width: 1500px;
         min-height: 100vh;
     }
 
     #account-form {
         max-width: 600px;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    #pet-cards {
+        /* display: inline-block; */
+        text-align: center;
+        margin: 1em auto;
+        column-count: 1;
+        column-gap: 1em;
+        width: 80%;
     }
 }

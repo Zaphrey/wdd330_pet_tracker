@@ -2,7 +2,6 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 if (process.env.NODE_ENV == "development") {
-    console.log("Adfgh")
     const pool = new Pool({
         connectionString: process.env.DB_URL,
         ssl: {
@@ -14,10 +13,10 @@ if (process.env.NODE_ENV == "development") {
         async query(text, params) {
             try {
                 const res = await pool.query(text, params);
-                console.log("executed query", { text });
+                // console.log("executed query", { text });
                 return res;
             } catch (error) {
-                console.error("error in query", { text });
+                // console.error("error in query", { text });
                 throw error;
             }
         }

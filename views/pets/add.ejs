@@ -2,13 +2,24 @@
     <form action="/pets/add" method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Add Pet</legend>
-            <label>Image<input type="file" id="image" name="image"></label>
-            <label>Name<input type="text" id="name" name="name"></label>
-            <label>Breed<input type="text" id="breed" name="breed"></label>
-            <label>Age<input type="number" id="age" name="age"></label>
-            <label>Weight<input type="number" id="weight" name="weight"></label>
+            <label>Image<input type="file" id="image" name="image" required></label>
+            <label>Name<input type="text" id="name" name="name" required></label>
+            <label>Breed<input type="text" id="breed" name="breed" required></label>
+            <label>Age<input type="number" id="age" name="age" required></label>
+            <label>Weight<input type="number" id="weight" name="weight" required></label>
+            <fieldset id="vaccination-section">
+                <legend>Vaccinations</legend>
+                <button type="button" id="add">
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                </button>
+                <section id="vaccination-section">
+
+                </section>
+            </fieldset>
             <button type="submit">Add My Pet</button>
         </fieldset>
     </form>
-    <script src="/js/addPet.js"></script>
+    <script type="module" src="/js/addPet.js"></script>
 </div>
