@@ -1,24 +1,32 @@
 <div id="account-form">
     <%- include("../partials/signinNav") %>
     <form action="/account/create" method="post">
+        <ul class="form-error-list"></ul>
         <fieldset>
             <legend>Register Account</legend>
             <p><span class="required-field"> </span>Indicates a required field</p>
             <label>
                 <span class="required-field"> </span>First name</span>
-                <input id="fname" name="fname" type="text" required>
+                <input id="fname" name="fname" type="text" >
             </label>
             <label>
                 <span class="required-field"> </span>Last name
-                <input id="lname" name="lname" type="text" required>
+                <input id="lname" name="lname" type="text" >
             </label>
             <label>
                 <span class="required-field"> </span>Email
-                <input id="email" name="email" type="text" required>
+                <input id="email" name="email" type="email" 
+                pattern="^\S+@\S+\.\S+$" >
             </label>
             <label>
                 <span class="required-field"> </span>Password
-                <input id="password" name="password" type="text" required>
+                <input id="password" name="password" type="password" min="8"
+                pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$" >
+            </label>
+            <label>
+                <span class="required-field"> </span>Password again
+                <input id="passwordMatch" name="passwordMatch" type="password" min="8"
+                    pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$" >
             </label>
             <button type="submit">Create My Account</button>
         </fieldset>

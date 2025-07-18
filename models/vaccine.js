@@ -3,7 +3,7 @@ const model = {};
 
 model.getAllVaccines = async function() {
     try {
-        return await pool.query("SELECT * FROM public.vaccine");
+        return await pool.query("SELECT * FROM vaccine");
     } catch(error) {
         return error.message;
     }

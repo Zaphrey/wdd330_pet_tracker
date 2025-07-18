@@ -6,7 +6,7 @@ model.uploadImage = async function(imageData, uploaderId) {
     try {
         const relativePath = "id" + uploaderId + "_" + Math.floor(Math.random() * 10000) + "_" + imageData.name;
         const path = __dirname + "/../public/upload/" + relativePath;
-        const query = await pool.query("INSERT INTO public.image (image_name, account_id) VALUES ($1, $2) RETURNING *;", [relativePath, uploaderId]);
+        const query = await pool.query("INSERT INTO image (image_name, account_id) VALUES ($1, $2) RETURNING *;", [relativePath, uploaderId]);
         imageData.mv(path);
 
         return query;
@@ -18,7 +18,7 @@ model.uploadImage = async function(imageData, uploaderId) {
 
 model.removeImage = async function(imageId) {
     try {
-        const image = await pool.query("SELECT * FROM public.image WHERE image_id = $1", [imageId]);
+        const image = await pool.query("SELECT * FROM image WHERE image_id = $1", [imageId]);
         
         if (!image) {
             return "Image not found."
@@ -36,7 +36,7 @@ model.removeImage = async function(imageId) {
             })
         }
 
-        return await pool.query("DELETE FROM public.image WHERE image_id = $1", [imageId]);
+        return await pool.query("DELETE FROM image WHERE image_id = $1", [imageId]);
     } catch (error) {
         return error.message;
     }

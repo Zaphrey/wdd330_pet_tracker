@@ -32,13 +32,12 @@ export function createVaccineEntry(vaccineList, vaccineId, vaccinatedDate, eleme
     let html = `<div class="${elementClass}"><label>Vaccine<select name="vaccine" id="vaccine" required>`
     
     vaccineList.forEach((vaccine, index) => {
-        index++
-        html += `<option ${index == vaccineId && "selected" || ""} value="${index}">${vaccine.vaccine_name + index}</option>`;
+        html += `<option ${index == vaccineId && "selected" || ""} value="${vaccine.vaccine_id}">${vaccine.vaccine_name}</option>`;
     });
 
     html += "</select></label>";
 
-    html += `<label>Date administered<input id="vaccinated_date" name="vaccinated_date" ${ vaccinatedDate && `value="${vaccinatedDate}"` || ""} type="date" required></label>
+    html += `<label>Administered<input id="vaccinated_date" name="vaccinated_date" ${ vaccinatedDate && `value="${vaccinatedDate}"` || ""} type="date" required></label>
         <button class="delete-vaccine-button" type="button" aria-label="vaccine delete button">
                 <span class="material-symbols-outlined">
                     delete
@@ -47,4 +46,11 @@ export function createVaccineEntry(vaccineList, vaccineId, vaccinatedDate, eleme
     </div>`
 
     return html;
+}
+
+export function validateImageExtension(fileName) {
+    let allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+    let fileExtension = fileName.split(".").pop().toLowerCase();
+
+    return allowedExtensions.some(extension => fileExtension == extension);
 }

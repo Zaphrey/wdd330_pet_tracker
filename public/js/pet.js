@@ -53,10 +53,10 @@ let buildPetCardShell = (petData, vaccinations) => {
                 </button>
             </div>
             <img id="pet-img" loading="lazy" src="/upload/${ petData.image_name }" alt="image of (pet-name)">
-            ${createLabelInputPair("Name", { class: "not-editable", id: "name", name: "name", value: petData.pet_name, disabled: undefined })}
-            ${createLabelInputPair("Breed", { class: "not-editable", id: "breed", name: "breed", value: petData.pet_breed, disabled: undefined })}
-            ${createLabelInputPair("Age", { class: "not-editable", id: "age", name: "age", value: petData.pet_age, disabled: undefined })}
-            ${createLabelInputPair("Weight", { class: "not-editable", id: "weight", name: "weight", value: petData.pet_weight, disabled: undefined })}
+            ${createLabelInputPair("Name", { class: "not-editable", id: "name", name: "name", value: petData.pet_name, disabled: undefined, required: true })}
+            ${createLabelInputPair("Breed", { class: "not-editable", id: "breed", name: "breed", value: petData.pet_breed, disabled: undefined, required: true })}
+            ${createLabelInputPair("Age", { class: "not-editable", id: "age", name: "age", value: petData.pet_age, disabled: undefined, required: true })}
+            ${createLabelInputPair("Weight", { class: "not-editable", id: "weight", name: "weight", value: petData.pet_weight, disabled: undefined, required: true })}
             <div class="vaccination-wrapper">
                 <div class="button-wrapper hide">
                     <p>Vaccinations</p>
@@ -71,7 +71,7 @@ let buildPetCardShell = (petData, vaccinations) => {
         vaccinations.forEach((vaccination, index) => {
             const date = vaccination.vaccinated_date.split("T")[0];
             let vaccineLabel = createLabelSelectPair("Vaccination", { class: "not-editable", name: "vaccine", id: "vaccine", disabled: undefined }, vaccineOptions, vaccination.vaccine_id);
-            let dateLabel = createLabelInputPair("Date administered", { class: "not-editable", id: "vaccinated_date", name: "vaccinated_date", type: "date", value: date, disabled: undefined })
+            let dateLabel = createLabelInputPair("Administered", { class: "not-editable", id: "vaccinated_date", name: "vaccinated_date", type: "date", value: date, disabled: undefined })
             html += `<div class="vaccine-label">
                 ${vaccineLabel}${dateLabel}
                 <button class="delete-vaccine-button hide" type="button" aria-label="vaccine delete button">
@@ -104,7 +104,7 @@ const connectEventsToCard = function(card) {
         vaccinationWrapper.insertAdjacentHTML("beforeend", createVaccineEntry(vaccinationList, null, null, "vaccine-label"));
         const lastElement = vaccinationWrapper.lastElementChild;
         const deleteButton = lastElement.querySelector(".delete-vaccine-button");
-        
+
         deleteButton.addEventListener("click", () => {
             vaccinationWrapper.removeChild(lastElement)
         });
@@ -137,6 +137,7 @@ const connectEventsToCard = function(card) {
         });
 
         makeCardUneditable(card);
+        card.classList.remove("editable");
     })
 }
 
@@ -151,7 +152,8 @@ const buildPetCard = (petData, vaccinations, fadeTime) => {
     
     connectEventsToCard(newestCard);
 
-    if (fadeTime) {
+    // Avoid falsy values
+    if (fadeTime || fadeTime === 0) {
         newestCard.querySelector("img").onload = () => {
             setTimeout(() => {
                 newestCard.classList.add("card-fade-in");
@@ -164,7 +166,7 @@ const buildPetCard = (petData, vaccinations, fadeTime) => {
 }
 
 const makeCardEditable = function(card) {
-    const elements = card.querySelectorAll("input, select")
+    const elements = card.querySelectorAll("input, select, label")
     const button = card.querySelector(".update-button");
     const vaccineButtonWrapper = card.querySelector(".button-wrapper")
 
@@ -201,11 +203,8 @@ const makeCardUneditable = function(card) {
         // Just clear out the contents of the card and reload it
         card.innerHTML = buildPetCardShell(data, data.vaccinations)
         connectEventsToCard(card);
+        unsavedCardDict[card.getAttribute("card-id")] = false;
     }
-
-    // TODO: add check to validate if data in the card was changed:
-    unsavedCardDict[card.getAttribute("card-id")] = false;
-    card.classList.remove("editable");
 }
 
 let createPetCards = async (petData) => {
@@ -217,17 +216,17 @@ let createPetCards = async (petData) => {
 }
 
 // https://stackoverflow.com/a/33240387
-window.addEventListener("beforeunload", e => {
-    let allCardsSaved = true;
+// window.addEventListener("beforeunload", e => {
+//     let allCardsSaved = true;
 
-    for (let value in unsavedCardDict) {
-        if (unsavedCardDict[value]) allCardsSaved = false
-    }
+//     for (let value in unsavedCardDict) {
+//         if (unsavedCardDict[value]) allCardsSaved = false
+//     }
 
-    if (!allCardsSaved) {
-        e.preventDefault();
-        e.returnValue = "You may have unsaved changes. Are you sure you want to leave?" 
-    }
-})
+//     if (!allCardsSaved) {
+//         e.preventDefault();
+//         e.returnValue = "You may have unsaved changes. Are you sure you want to leave?" 
+//     }
+// })
 
 createPetCards(petData)

@@ -1,4 +1,4 @@
-const { registerAccount, getAccountFromEmail } = require("../models/account");
+const { registerAccount, getAccountFromEmail, checkForExistingEmail } = require("../models/account");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -20,31 +20,51 @@ baseController.buildLogin = async function (req, res) {
 
 baseController.createAccount = async function (req, res) {
     const { fname, lname, email, password } = req.body;
-    const result = await registerAccount(fname, lname, email, password);
-    console.error(result)
-    if (typeof(result) === "string") {
-        return res.status(400).send("A user with that email already exists!");
+    const user = await checkForExistingEmail(email);
+    // console.log(req.body)
+    if (user.rows.length > 0) {
+        return res.status(401).send(JSON.stringify({ message: "This email is already in use!" }));
+    }
+
+    const newUser = await registerAccount(fname, lname, email, password);
+    
+    const options = {
+        algorithm: "HS256",
+        expiresIn: 3600 * 1000,
+    }
+
+    const accessToken = jwt.sign({ 
+        id: newUser.rows[0].account_id, 
+        firstname: newUser.rows[0].account_firstname,
+        lastname: newUser.rows[0].account_lastname,
+        email: newUser.rows[0].account_email 
+    }, process.env.JWT_SECRET, options);
+
+    if(process.env.NODE_ENV === 'development') {
+        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+    } else {
+        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
     }
 
     res.set("Content-Type", "application/json");
-    return res.status(200).send(JSON.stringify(result.rows));
+    return res.status(202).send(JSON.stringify({ "accessToken": accessToken }));
 }
 
 baseController.signIn = async function (req, res) {
     try {
         const { email, password } = req.body;
-        const user = await getAccountFromEmail(email);
+        const user = await checkForExistingEmail(email);
 
-        if (user.rows < 1) {
+        if (user.rows.length == 0) {
             res.set("Content-Type", "application/json");
-            return res.status(200).send(JSON.stringify({ message: "Could not find a user with that email address." }));
+            return res.status(200).send(JSON.stringify({ message: "Invalid username or password??" }));
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.rows[0].account_password);
 
         if (!isPasswordValid) {
             res.set("Content-Type", "application/json");
-            return res.status(200).send(JSON.stringify({ message: "Invalid password." }));
+            return res.status(200).send(JSON.stringify({ message: "Invalid username or password!!" }));
         }
 
         const options = {

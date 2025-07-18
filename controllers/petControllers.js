@@ -29,7 +29,6 @@ petController.getAllPets = async function(req, res) {
 }
 
 petController.uploadPet = async function (req, res) {
-    console.log(req.body)
     const { 
         name, 
         breed, 
@@ -56,6 +55,7 @@ petController.uploadPet = async function (req, res) {
         if (typeof(req.body.vaccine) == "string") {
             vaccinatedModel.createVaccinatedEntryFromPetVaccineDate(petData.rows[0].pet_id, req.body.vaccine, req.body.vaccinated_date);
         } else {
+            console.log(req.body.vaccine, req.body.vaccinated_date)
             for (let index = 0; index < req.body.vaccine.length; index++) {
                 vaccinatedModel.createVaccinatedEntryFromPetVaccineDate(petData.rows[0].pet_id, req.body.vaccine[index], req.body.vaccinated_date[index]);
             }
@@ -100,19 +100,17 @@ petController.deletePet = async function(req, res) {
 
 petController.updatePet = async function(req, res) {
     const authorization = req.headers.authorization;
-    console.log(req.params)
     const { petId } = req.params;
-    const { vaccine, vaccinated_date } = req.body;
+    const { name, breed, age, weight, vaccine, vaccinated_date } = req.body;
 
-    console.log(petId)
 
     utilities.verifyUserAuthorizationToken(authorization, async (error, data) => {
         if (error) {
             return res.status(200).send(JSON.stringify({ message: error}));
         } 
         // delete all vaccinations and create new vaccinated entries given the updated data
-        console.log(req.body)
-        await vaccinatedModel.deleteAllVaccinatedEntriesFromPet(petId)
+        await vaccinatedModel.deleteAllVaccinatedEntriesFromPet(petId);
+        await petModel.updatePet(name, breed, age, weight, data.id, petId);
 
         if (vaccine && vaccinated_date) {
             if (typeof(vaccine) == "string") {
@@ -125,7 +123,6 @@ petController.updatePet = async function(req, res) {
         }
 
         const updatedPetData = await petModel.getPetFromUser(data.id, petId)
-        console.log(data.id, petId, updatedPetData[0])
         return res.status(200).send(JSON.stringify(updatedPetData[0]));
     })
 }

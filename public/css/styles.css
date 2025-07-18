@@ -11,6 +11,7 @@
     --secondary-dark: #3d3a32;
     --text-color: #1e2022; 
     --required: #7a2a2a;
+    --delete: #e94040;
 }
 
 * {
@@ -29,13 +30,16 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(0.5turn, var(--background-color), var(--background-color-shadow));
 }
 
 header {
     background-color: var(--background-color);
+    display: inline;
 }
 
 footer {
+    position: sticky;
     color: var(--background-color);
     height: 5em;
     background-color: var(--primary-light);
@@ -44,11 +48,19 @@ footer {
 }
 
 nav {
+    display: inline;
+}
+
+.nav-bar {
+    overflow: initial;
     background-color: var(--primary-light);
     width: 100vw;
     grid-template-columns: 1fr 1fr;
-    position: relative;
+    position: sticky;
+    top: 0;
     display: grid;
+    box-shadow: 0px 5px 20px black;
+    z-index: 2; 
 }
 
 #nav-gradient {
@@ -82,26 +94,14 @@ nav {
     justify-content: right;
 }
 
-#nav-buttons-left a:not(a:last-child) {
-    border-right: 2px solid var(--text-color);
-}
 
-#nav-buttons-right a:not(a:first-child) {
-    border-left: 2px solid var(--text-color);
-}
-
-#nav-buttons-left a:last-child {
-    border-radius: 0px 4px 4px 0px;
-}
-#nav-buttons-right a:first-child {
-    border-radius: 4px 0px 0px 4px;
-}
 
 .nav-button {
-    width: 10em;
+    max-width: 10em;
+    min-width: 6em;
     text-align: center;
     text-decoration: none;
-    background-color: var(--primary-dark);
+    /* background-color: var(--primary-dark); */
     display: inline;
     padding: 1em;
     color: var(--background-color);
@@ -114,9 +114,7 @@ nav {
 }
 
 .nav-button:hover {
-    background-color: var(--text-color)
-    /* border: 2px solid black; */
-    
+    text-decoration: underline;
 }
 
 #hero-section {
@@ -128,30 +126,53 @@ nav {
 #hero-section img {
     width: 100%;
     max-height: 500px;
-    overflow:auto;
+    overflow: auto;
     object-fit: cover;
     grid-column: 1 / 2;
     grid-row: 1 / 2;
 }
 
+#hero-section h1 {
+    font-size: 3em;
+    color: var(--background-color);
+    text-shadow: 1px 1px 0.1em #000000;
+    margin: 0;
+}
+
 #hero-section div {
     margin: auto;
     padding: 2em;
-    max-width: 500px;
+    max-width: 800px;
     text-align: center;
     background-color: var(--background-color);
     grid-column: 1 / 2;
     grid-row: 1 / 2;
 }
 
-#hero-section p {
-    padding: 1em;
+#hero-section>div {
+    backdrop-filter: blur(10px);
+    background-color: rgba(59, 70, 71, 0.15);
+    border-radius: 1em;
+    border: 2px solid var(--background-color);
 }
 
-.button {
+#hero-section p {
+    color: var(--background-color);
+    text-shadow: 1px 1px 0.1em #000000;
+    font-size: large;
     padding: 1em;
+    margin: 1em;
+}
+
+
+.button {
+    padding: 0.5em;
+    margin: 1em;
+    font-size: large;
     background-color: var(--secondary-light);
     color: var(--background-color);
+    border-radius: 4px;
+    border: 2px solid var(--secondary-dark);
 }
 
 .button:hover {
@@ -280,6 +301,7 @@ body {
 }
 
 .pet-card {
+    box-shadow: 0px 5px 10px var(--primary-dark-second);
     display: inline-block;
     /* padding: 1em; */
     background-color: var(--primary-light);
@@ -387,21 +409,23 @@ fieldset>fieldset {
 .vaccine-label label, .vaccine-label label:nth-child(even), .vaccine-label label:not(:last-child), .vaccine-label input {
     border: none;
     background-color: transparent;
-    decoration;
 }
 
-.vaccine-label select, .accine-label option, .vaccine-label input {
+.vaccine-label select, .vaccine-label option, .vaccine-label input {
     margin-bottom: 0;
     width: 100%;
     background-color: var(--background-color);
+    height: 3em;
+    padding: 0;
 }
 
-.vaccine-label input {
+/* .vaccine-label input {
     width: 16ch;
     max-width: 100%;
     padding: 0.5em;
     border: 2px solid var(--text-color);
-}
+    height: 3em;
+} */
 
 .vaccine-label {
     display: block;
@@ -440,19 +464,143 @@ input.not-editable, select.not-editable {
     font-size: medium;
 }
 
+.vaccine-label button, .pet-card button.update-button {
+    margin: 0.5em;
+}
+
+.vaccine-label {
+    position: relative;
+    /* display: flex; */
+}
+
+.button-wrapper p {
+    text-align: left;
+    margin: 0.5em;
+}
+
+.vaccine-label button {
+    margin: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 3em;
+    width: 3em;
+    grid-column: 3/4;
+    aspect-ratio: 1 / 1;
+    background-color: var(--delete);
+}
+
+.vaccine-label label>input[type="date"]:not(.not-editable) {
+    padding: 0;
+    text-align: center;
+    height: 3em;
+}
+
+.vaccine-label label>select:not(.not-editable) {
+    padding: 0 1em;
+}
+
+.pet-card input:not(.not-editable), .pet-card select:not(.not-editable) {
+    border: 2px solid var(--text-color);
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 32ch;
+}
+
+@keyframes fade-in {
+
+    0%,
+    25% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s ease-in-out forwards;
+}
+
+input:valid {
+    background-color: var(--background-color-shadow)
+}
+
+@keyframes error-list-grow {
+    0% {
+        max-height: 0px;
+        height: 0px;
+        font-size: 0%;
+    }
+    100% { 
+        max-height: 100%;
+        height: initial;
+        font-size: initial;
+    }
+}
+
+@keyframes error-list-grow-text {
+    0% {
+        max-height: 0px;
+        height: 0px;
+        font-size: 0%;
+        padding: 0;
+    }
+
+    100% {
+        max-height: 100%;
+        height: initial;
+        font-size: initial;
+        padding: 0.1em;
+    }
+}
+
+.form-error-list:has(li):not(.no-animate) {
+    margin: 0;
+    animation: error-list-grow 0.5s ease-in-out forwards;
+    border-radius: calc(16px - 0.5em);
+    background-color: var(--background-color);
+    border: 2px solid var(--text-color);
+    padding: 1em;
+}
+
+.form-error-list li:not(.no-animate) {
+    animation: error-list-grow-text 0.5s ease-in-out forwards;
+}
+
 @media screen and (min-width: 800px) {
+    
     form {
         border-radius: 16px;
     }
 
     .vaccine-label {
         display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* grid-template-rows: 1fr 1fr; */
+    }
+
+    .vaccine-label:not(:has(.not-editable)) {
+        grid-template-columns: 1fr 4em;
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .vaccine-label:not(:has(.not-editable)) label:nth-child(2) {
+        grid-row: 2/3;
+    }
+
+    .vaccine-label button {
+        position: relative;
+        grid-column: 3/4;
     }
 
     #pet-cards {
         text-align: center;
         margin: 1em auto;
         width: 30%;  
+        max-width: 800px;
     }
 
     #pet-cards:has(>:nth-child(2)) {
@@ -460,13 +608,13 @@ input.not-editable, select.not-editable {
         margin: 1em auto;
         column-count: 2;
         column-gap: 1em;   
-        width: 60%;
+        width: 80%;
     }
 
     #pet-cards:only-child {
         column-count: 1;    
         column-gap: 1em;
-        width: 30%;
+        width: 40%;
     }
 
     body {
@@ -480,6 +628,10 @@ input.not-editable, select.not-editable {
 }
 
 @media screen and (min-width: 500px) {
+    .pet-card label {
+        display: block;
+    }
+
     #pet-cards {
         /* display: inline-block; */
         text-align: center;
