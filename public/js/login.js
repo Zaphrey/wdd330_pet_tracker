@@ -1,21 +1,28 @@
+import { convertFormDataToJson } from "./utilities.js";
+import ErrorList from "./errorList.js";
+
 const form = document.forms[0];
 const button = form.querySelector("button");
-const errorList = form.querySelector("ul");
-let performedErrorAnimation = false;
+const errorListElement = document.querySelector(".form-error-list");
+const errorList = new ErrorList(errorListElement);
 
 button.addEventListener("click", async e =>  {
     e.preventDefault();
-    let errors = [];
+
+    if (!form.reportValidity()) {
+        button.classList.remove("toggled");
+
+        setTimeout(() => {
+            button.classList.add("toggled");
+        }, 600);
+        console.log("asd")
+        return;
+    }
 
     let search = new URLSearchParams(window.location.search);
     let redirect = search.get("redirect");
     
-    let formData = new FormData(form);
-    let convertedJson = {};
-
-    formData.forEach((value, key) => {
-        convertedJson[key] = value;
-    });
+    const convertedJson = convertFormDataToJson(form);
 
     const options = {
         method: "POST",
@@ -24,10 +31,9 @@ button.addEventListener("click", async e =>  {
         },
         body: JSON.stringify(convertedJson),
     };
+
     const response = await fetch(`/account/login`, options);
-    
     const result = await response.json();
-    console.log(result)
 
     if (response.ok && response.status === 202) {
         localStorage.setItem("so-token", result.accessToken);
@@ -39,35 +45,11 @@ button.addEventListener("click", async e =>  {
         return;
     } else {
         if (result.errors) {
-            result.errors.forEach(error => {
-                errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>${ error.msg }</li>`)
-            })
+            errorList.addErrorList(errors);
         } else {
-            errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>${ result.message }</li>`)
+            errorList.addError(result.message)
         }
     };
 
-    // if (!form.reportValidity()) {
-    //     let passwordPatternMismatch = false;
-    //     let inputs = form.querySelectorAll("input")
-
-    //     inputs.forEach(input => {
-    //         if (input.getAttribute("type") == "password") {
-    //             passwordPatternMismatch = input.validity.patternMismatch
-    //             console.log(passwordPatternMismatch)
-    //         }
-    //     })
-
-    //     if (passwordPatternMismatch) {
-    //         errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>Password must have at least one number, one special character, one uppercase and lowercase character, and at least 8 characters total.</li>`);
-    //     }
-    // }
-
-    errorList.innerHTML = "";
-    console.log(errors)
-    errors.forEach(error => {
-        errorList.insertAdjacentHTML("afterbegin", error)
-    })
-
-    performedErrorAnimation = true;
+    errorList.showErrors();
 });

@@ -48,9 +48,25 @@ export function createVaccineEntry(vaccineList, vaccineId, vaccinatedDate, eleme
     return html;
 }
 
-export function validateImageExtension(fileName) {
+export function validateImageExtension(file) {
     let allowedExtensions = ["jpg", "jpeg", "png", "webp"];
-    let fileExtension = fileName.split(".").pop().toLowerCase();
+    let fileExtension = file.name.split(".").pop().toLowerCase();
 
     return allowedExtensions.some(extension => fileExtension == extension);
+}
+
+export function validateImageSize(file) {
+    let maxSize = 8000000 // 8mb
+    return file.size <= maxSize;
+}
+
+export function convertFormDataToJson(form) {
+    let formData = new FormData(form);
+    let convertedJson = {};
+
+    formData.forEach((value, key) => {
+        convertedJson[key] = value;
+    });
+
+    return convertedJson;
 }

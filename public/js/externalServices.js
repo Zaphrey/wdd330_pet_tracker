@@ -99,13 +99,28 @@ export async function updateUserPet(userToken, petId, petForm) {
         body: petForm,
     };
 
-    console.log(options)
-
     const response = await fetch(`/pets/update/${Number.parseInt(petId)}`, options);
 
     if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        return data;
+    }
+}
+
+export async function uploadFeedback(userToken, body) {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${userToken}`,
+        },
+        body: await JSON.stringify(body),
+    };
+
+    const response = await fetch(`/feedback`, options);
+
+    if (response.ok) {
+        const data = await response.json();
         return data;
     }
 }

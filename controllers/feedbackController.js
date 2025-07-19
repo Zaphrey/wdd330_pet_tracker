@@ -4,7 +4,7 @@ const feedbackModel = require("../models/feedback")
 let controller = {}
 
 controller.renderFeedbackPage = async function(req, res) {
-    res.render("/feedback", { title: Feedback });
+    res.render("feedback/", { title: "Feedback" });
 }
 
 controller.uploadFeedback = async function(req, res) {

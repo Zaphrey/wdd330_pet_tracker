@@ -10,6 +10,7 @@ const petRoutes = require("./routes/petRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 const vaccineRoutes = require("./routes/vaccineRoutes");
 const vaccinatedRoutes = require("./routes/vaccinatedRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes")
 const utilities = require("./utilities");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
@@ -47,6 +48,7 @@ app.get("/", baseController.buildHome);
 app.use("/pets", petRoutes);
 app.use("/account", accountRoutes);
 app.use("/vaccine", vaccineRoutes);
+app.use("/feedback", feedbackRoutes);
 // app.use("/vaccinated", vaccinatedRoutes);
 
 app.listen(process.env.PORT, () => {

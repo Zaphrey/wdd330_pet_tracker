@@ -1,17 +1,29 @@
+import ErrorList from "./errorList.js";
+
 const form = document.forms[0];
 const button = form.querySelector("button");
-const errorList = form.querySelector("ul");
-let performedErrorAnimation = false;
+const errorListElement = document.querySelector(".form-error-list");
+const errorList = new ErrorList(errorListElement);
 
 button.addEventListener("click", async e => {
     e.preventDefault();
 
-    let errors = [];
     const password = form.password.value;
     const passwordMatch = form.passwordMatch.value;
     const passwordsMatch = password == passwordMatch;
 
-    if (passwordsMatch && form.reportValidity()) {
+    if (!form.reportValidity()) {
+        console.log("asd")
+        button.classList.remove("toggled");
+
+        setTimeout(() => {
+            button.classList.add("toggled");
+        }, 600);
+
+        return;
+    }
+
+    if (passwordsMatch) {
         let formData = new FormData(form);
         let convertedJson = {};
 
@@ -37,11 +49,9 @@ button.addEventListener("click", async e => {
             return;
         } else {
             if (result.errors) {
-                result.errors.forEach(error => {
-                    errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>${ error.msg }</li>`)
-                })
+                errorList.addErrorArray(result.errors);
             } else {
-                errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>${ result.message }</li>`)
+                errorList.addError(result.message);
             }
         };
     } else {
@@ -59,14 +69,9 @@ button.addEventListener("click", async e => {
         })
 
         if (passwordPatternMismatch) {
-            errors.push(`<li ${performedErrorAnimation && "class=\"no-animate\""}>Password must have at least one number, one special character, one uppercase and lowercase character, and at least 8 characters total.</li>`);
+            errorList.addError("Password must have at least one number, one special character, one uppercase and lowercase character, and at least 8 characters total.");
         }
     }
 
-    errorList.innerHTML = "";
-    errors.forEach(error => {
-        errorList.insertAdjacentHTML("afterbegin", error)
-    })
-
-    performedErrorAnimation = true;
+    errorList.showErrors();
 })
