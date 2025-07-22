@@ -58,48 +58,52 @@ validators.feedbackRules = function() {
 
 validators.petRules = function() {
     return [
-        body("name").notEmpty().withMessage("Name cannot be empty.").isAlpha().withMessage("Name can only contain letters."),
+        body("name").notEmpty().withMessage("Name cannot be empty."),
         body("breed").notEmpty().withMessage("Breed cannot be empty.").isAlpha().withMessage("Breed can only contain letters."),
         body("age").notEmpty().withMessage("Age cannot be empty.").isInt({ min: 0 }).withMessage("Age can only contain numbers."),
         body("weight").notEmpty().withMessage("Weight cannot be empty.").isInt({ min: 0 }).withMessage("Weight can only contain numbers."),
         body("vaccine").custom(async vaccine => {
-            const vaccines = await getAllVaccines();
-            if (Array.isArray(vaccine)) {
-                vaccine.forEach(vaccineId => {
+            if (vaccine) {
+                const vaccines = await getAllVaccines();
+                if (Array.isArray(vaccine)) {
+                    vaccine.forEach(vaccineId => {
+                        let matches = vaccines.rows.some(vaccineRow => {
+                            return vaccineRow.vaccine_id == Number.parseInt(vaccineId)
+                        });
+        
+                        if (!matches) {
+                            throw new Error("Invalid vaccine selection");
+                        }
+                    })
+                } else if (typeof(parseInt(vaccine)) == "number") {
                     let matches = vaccines.rows.some(vaccineRow => {
-                        return vaccineRow.vaccine_id == Number.parseInt(vaccineId)
-                    });
-    
+                        return vaccineRow.vaccine_id == Number.parseInt(vaccine)
+                    })
+
                     if (!matches) {
                         throw new Error("Invalid vaccine selection");
-                    }
-                })
-            } else if (typeof(parseInt(vaccine)) == "number") {
-                let matches = vaccines.rows.some(vaccineRow => {
-                    return vaccineRow.vaccine_id == Number.parseInt(vaccine)
-                })
-
-                if (!matches) {
-                    throw new Error("Invalid vaccine selection");
-                };
+                    };
+                }
             }
 
             return true;
         }),
         body("vaccination_date").custom(async date => {
-            function isDateValid(date) {
-                return !isNaN(new Date(date));
-            }
-
-            if (Array.isArray(date)) {
-                date.forEach(dateStr => {
-                    if (!isDateValid(dateStr)) {
+            if (date) {
+                function isDateValid(date) {
+                    return !isNaN(new Date(date));
+                }
+    
+                if (Array.isArray(date)) {
+                    date.forEach(dateStr => {
+                        if (!isDateValid(dateStr)) {
+                            throw new Error("Invalid date");
+                        }
+                    })
+                } else if (date) {
+                    if (!isDateValid(date)) {
                         throw new Error("Invalid date");
                     }
-                })
-            } else if (date) {
-                if (!isDateValid(date)) {
-                    throw new Error("Invalid date");
                 }
             }
 
