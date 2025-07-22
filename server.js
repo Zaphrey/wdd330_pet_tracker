@@ -52,6 +52,12 @@ app.use("/vaccine", vaccineRoutes);
 app.use("/feedback", feedbackRoutes);
 // app.use("/vaccinated", vaccinatedRoutes);
 
+app.use(async (err, req, res, next) => {
+    console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+    if (err.status == 404) { message = err.message } else { message = "Oh no! There was a crash. Maybe try a different route?" }
+    res.redirect("/");
+})
+
 app.listen(process.env.PORT, () => {
     console.log(`app listening on ${process.env.HOST}:${process.env.PORT}`);
 })
