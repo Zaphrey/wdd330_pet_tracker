@@ -9,15 +9,17 @@ const errorList = new ErrorList(errorListElement);
 button.addEventListener("click", async e =>  {
     e.preventDefault();
 
-    let html = button.innerHTML;
-    button.innerHTML = `<span class="material-symbols-outlined">close</span>`
+    if (!form.reportValidity) {
+        let html = button.innerHTML;
+        button.innerHTML = `<span class="material-symbols-outlined">close</span>`
 
-    button.classList.remove("toggled");
+        button.classList.remove("toggled");
 
-    setTimeout(() => {
-        button.classList.add("toggled");
-        button.innerHTML = html;
-    }, 600);
+        setTimeout(() => {
+            button.classList.add("toggled");
+            button.innerHTML = html;
+        }, 600);
+    }
 
     let search = new URLSearchParams(window.location.search);
     let redirect = search.get("redirect");

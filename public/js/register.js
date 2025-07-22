@@ -47,6 +47,7 @@ button.addEventListener("click", async e => {
             window.location.href = "/pets";
             return;
         } else {
+            console.log(result)
             if (result.errors) {
                 errorList.addErrorArray(result.errors);
             } else {
