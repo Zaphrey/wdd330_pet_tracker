@@ -239,7 +239,7 @@ let createPetCards = async (petData) => {
 //     }
 // })
 
-if (!petData.isEmpty) {
+if (petData.length > 0) {
     createPetCards(petData)
 } else {
     let notFound = document.querySelector(".not-found");
