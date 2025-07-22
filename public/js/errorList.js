@@ -21,6 +21,7 @@ export default class ErrorList {
 
     showErrors() {
         this.listElement.innerHTML = "";
+        this.listElement.classList.add("no-animate");
     
         this.errors.forEach(error => {
             this.listElement.insertAdjacentHTML("afterbegin", error);
@@ -33,5 +34,6 @@ export default class ErrorList {
     hideErrors() {
         this.listElement.innerHTML = "";
         this.animationPlayed = false;
+        this.listElement.classList.remove("no-animate");
     }
 }

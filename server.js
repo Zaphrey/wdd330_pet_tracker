@@ -14,6 +14,7 @@ const feedbackRoutes = require("./routes/feedbackRoutes")
 const utilities = require("./utilities");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const expressValidator = require("express-validator");
 
 // app.use(session({
 //     store: new (require('connect-pg-simple')(session))({

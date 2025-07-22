@@ -55,11 +55,8 @@ export async function createUserPet(userToken, petForm) {
     };
 
     const response = await fetch("/pets/add", options);
-
-    if (response.ok) {
-        const data = await response.json();
-        return data;
-    }
+    const data = await response.json();
+    return data;
 }
 
 export async function getAllVaccines() {
@@ -100,11 +97,9 @@ export async function updateUserPet(userToken, petId, petForm) {
     };
 
     const response = await fetch(`/pets/update/${Number.parseInt(petId)}`, options);
+    const data = await response.json();
 
-    if (response.ok) {
-        const data = await response.json();
-        return data;
-    }
+    return data;
 }
 
 export async function uploadFeedback(userToken, body) {
@@ -118,9 +113,6 @@ export async function uploadFeedback(userToken, body) {
     };
 
     const response = await fetch(`/feedback`, options);
-
-    if (response.ok) {
-        const data = await response.json();
-        return data;
-    }
+    const data = await response.json();
+    return data;
 }

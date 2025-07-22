@@ -4,10 +4,10 @@
         <fieldset>
             <legend>Add Pet</legend>
             <label>Image<input type="file" id="image" name="image" required></label>
-            <label>Name<input type="text" id="name" name="name" required></label>
-            <label>Breed<input type="text" id="breed" name="breed" required></label>
-            <label>Age<input type="number" id="age" name="age" required></label>
-            <label>Weight<input type="number" id="weight" name="weight" required></label>
+            <label>Name<input type="text" pattern="[A-Za-z ]+" id="name" name="name" required></label>
+            <label>Breed<input type="text" pattern="[A-Za-z ]+" id="breed" name="breed" required></label>
+            <label>Age<input type="number" pattern="[0-9]+" id="age" name="age" required></label>
+            <label>Weight<input type="number" pattern="[0-9]+" id="weight" name="weight" required></label>
             <fieldset id="vaccination-section">
                 <legend>Vaccinations</legend>
                 <button type="button" id="add">

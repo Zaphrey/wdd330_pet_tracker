@@ -13,7 +13,7 @@ controller.uploadFeedback = async function(req, res) {
 
     verifyUserAuthorizationToken(authorization, async (error, data) => {
         if (error) {
-            return res.status(200).send(JSON.stringify({ message: error}));
+            return res.status(400).send(JSON.stringify({ message: error}));
         } else {
             await feedbackModel.addFeedbackEntryFromUser(data.id, feedback);
             return res.status(200).send(JSON.stringify({ message: "Feedback received!"}));

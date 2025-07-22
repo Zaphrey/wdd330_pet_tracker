@@ -1,3 +1,4 @@
+import ErrorList from "./errorList.js";
 import { getAllVaccines, getUserPets, getVaccinationsForPet, removeUserPet, updateUserPet } from "./externalServices.js";
 import { createVaccineEntry, getUserTokenFromStorage, processPetFormData } from "./utilities.js";
 const userJWT = getUserTokenFromStorage();
@@ -52,11 +53,13 @@ let buildPetCardShell = (petData, vaccinations) => {
                     </span>
                 </button>
             </div>
+            
             <img id="pet-img" loading="lazy" src="/upload/${ petData.image_name }" alt="image of (pet-name)">
-            ${createLabelInputPair("Name", { class: "not-editable", id: "name", name: "name", value: petData.pet_name, disabled: undefined, required: true })}
-            ${createLabelInputPair("Breed", { class: "not-editable", id: "breed", name: "breed", value: petData.pet_breed, disabled: undefined, required: true })}
-            ${createLabelInputPair("Age", { class: "not-editable", id: "age", name: "age", value: petData.pet_age, disabled: undefined, required: true })}
-            ${createLabelInputPair("Weight", { class: "not-editable", id: "weight", name: "weight", value: petData.pet_weight, disabled: undefined, required: true })}
+            <ul class="form-error-list"></ul>
+            ${createLabelInputPair("Name", { class: "not-editable", pattern: "[A-Za-z ]+", id: "name", name: "name", value: petData.pet_name, disabled: undefined, required: true })}
+            ${createLabelInputPair("Breed", { class: "not-editable", pattern: "[A-Za-z ]+", id: "breed", name: "breed", value: petData.pet_breed, disabled: undefined, required: true })}
+            ${createLabelInputPair("Age", { class: "not-editable", pattern: "[0-9]+", id: "age", name: "age", value: petData.pet_age, disabled: undefined, required: true })}
+            ${createLabelInputPair("Weight", { class: "not-editable", pattern: "[0-9]+", id: "weight", name: "weight", value: petData.pet_weight, disabled: undefined, required: true })}
             <div class="vaccination-wrapper">
                 <div class="button-wrapper hide">
                     <p>Vaccinations</p>
@@ -93,6 +96,8 @@ const connectEventsToCard = function(card) {
     const vaccinationWrapper = card.querySelector(".vaccination-wrapper");
     const settingsButton = card.querySelector(".settings-button");
     const updateButton = card.querySelector(".update-button");
+    const errorListElement = card.querySelector(".form-error-list");
+    const errorList = new ErrorList(errorListElement);
     
     card.querySelectorAll(".delete-vaccine-button").forEach(button => {
         button.addEventListener("click", e => {
@@ -129,6 +134,12 @@ const connectEventsToCard = function(card) {
         const updatedForm = new FormData(card);
         const result = await updateUserPet(userJWT, card.getAttribute("card-id"), updatedForm);
 
+        if (result.errors) {
+            errorList.addErrorArray(result.errors);
+            errorList.showErrors();
+            return;
+        }
+
         petData.some((pet, index) => {
             if (pet.pet_id == result.pet_id) {
                 petData[index] = result;
@@ -137,7 +148,6 @@ const connectEventsToCard = function(card) {
         });
 
         makeCardUneditable(card);
-        card.classList.remove("editable");
     })
 }
 
@@ -229,4 +239,9 @@ let createPetCards = async (petData) => {
 //     }
 // })
 
-createPetCards(petData)
+if (!petData.isEmpty) {
+    createPetCards(petData)
+} else {
+    let notFound = document.querySelector(".not-found");
+    notFound.classList.remove("hide");
+}

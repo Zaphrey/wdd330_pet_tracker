@@ -7,14 +7,14 @@
             <p><span class="required-field"> </span>Indicates a required field</p>
             <label>
                 <span class="required-field"> </span>Email
-                <input id="email" name="email" type="email" pattern="^\S+@\S+\.\S+$" required>
+                <input id="email" name="email" type="email" minlength="4" pattern="^\S+@\S+\.\S+$" required>
             </label>
             <label>
                 <span class="required-field"> </span>Password
-                <input id="password" name="password" type="password" min="8"
-                pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$" required>
+                <input id="password" name="password" type="password" minlength="8" min="8"
+                pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$" required>
             </label>
-            <button type="submit">Log In</button>
+            <button anim="shake" class="toggled" type="submit">Login</button>
         </fieldset>
     </form>
 </div>

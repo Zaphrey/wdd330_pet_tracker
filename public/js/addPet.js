@@ -59,8 +59,11 @@ submitButton.addEventListener("click", async (e) => {
         let formData = new FormData(form);
 
         const result = await createUserPet(userJWT, formData);
-
-        if (result.success) {
+        
+        if (result.error) {
+            errorList.addError(result.error);
+            errorList.showErrors();
+        } else {
             window.location.href = "/pets";
         }
     }

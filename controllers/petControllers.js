@@ -20,7 +20,7 @@ petController.getAllPets = async function(req, res) {
 
     utilities.verifyUserAuthorizationToken(authorization, async (error, data) => {
         if (error) {
-            return res.status(200).send(JSON.stringify({ message: error}));
+            return res.status(400).send(JSON.stringify({ message: error}));
         } else {
             const petData = await petModel.getPetsFromUser(data.id);
             return res.status(200).send(JSON.stringify(petData));
@@ -39,6 +39,16 @@ petController.uploadPet = async function (req, res) {
     } = req.body;
 
     const image = req.files.image;
+
+    let allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+    let fileExtension = image.name.split(".").pop().toLowerCase();
+
+    if (!allowedExtensions.some(extension => fileExtension == extension)) {
+        return res.status(400).send(JSON.stringify({ error: "Unsupported file type. Supported file types include .png, .jpg, .jpeg, and .webp" }))
+    }
+
+    let maxSize = 8000000 // 8mb
+    if (image.size > maxSize) return res.status(400).send(JSON.stringify({ error: "File size is too big. Please upload an image smaller than 8mb" }))
     
     const petData = await petModel.createPet(
         res.locals.accountData.id, 
@@ -73,7 +83,7 @@ petController.deletePet = async function(req, res) {
 
     utilities.verifyUserAuthorizationToken(authorization, async (error, data) => {
         if (error) {
-            return res.status(200).send(JSON.stringify({ message: error}));
+            return res.status(400).send(JSON.stringify({ message: error}));
         } 
 
         const result = await petModel.deletePetFromUser(data.id, petId);
@@ -103,10 +113,9 @@ petController.updatePet = async function(req, res) {
     const { petId } = req.params;
     const { name, breed, age, weight, vaccine, vaccinated_date } = req.body;
 
-
     utilities.verifyUserAuthorizationToken(authorization, async (error, data) => {
         if (error) {
-            return res.status(200).send(JSON.stringify({ message: error}));
+            return res.status(400).send(JSON.stringify({ message: error}));
         } 
         // delete all vaccinations and create new vaccinated entries given the updated data
         await vaccinatedModel.deleteAllVaccinatedEntriesFromPet(petId);

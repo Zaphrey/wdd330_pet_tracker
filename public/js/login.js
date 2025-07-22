@@ -9,15 +9,15 @@ const errorList = new ErrorList(errorListElement);
 button.addEventListener("click", async e =>  {
     e.preventDefault();
 
-    if (!form.reportValidity()) {
-        button.classList.remove("toggled");
+    let html = button.innerHTML;
+    button.innerHTML = `<span class="material-symbols-outlined">close</span>`
 
-        setTimeout(() => {
-            button.classList.add("toggled");
-        }, 600);
-        console.log("asd")
-        return;
-    }
+    button.classList.remove("toggled");
+
+    setTimeout(() => {
+        button.classList.add("toggled");
+        button.innerHTML = html;
+    }, 600);
 
     let search = new URLSearchParams(window.location.search);
     let redirect = search.get("redirect");
@@ -45,7 +45,7 @@ button.addEventListener("click", async e =>  {
         return;
     } else {
         if (result.errors) {
-            errorList.addErrorList(errors);
+            errorList.addErrorArray(result.errors);
         } else {
             errorList.addError(result.message)
         }

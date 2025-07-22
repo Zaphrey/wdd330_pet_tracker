@@ -1,6 +1,7 @@
 const app = require("express");
 const { buildHome, buildAddPage, uploadPet, getAllPets, deletePet, getPetVaccinations, updatePet } = require("../controllers/petControllers");
 const utilities = require("../utilities");
+const { petRules, checkData } = require("../utilities/validators");
 const router = app.Router();
 
 router.get("/", utilities.checkLogin, buildHome);
@@ -10,6 +11,6 @@ router.delete("/:petId", deletePet)
 
 // Independent from session cookies
 router.get("/all", getAllPets);
-router.put("/update/:petId", updatePet);
+router.put("/update/:petId", petRules(), checkData, updatePet);
 
 module.exports =  router;

@@ -12,16 +12,15 @@ button.addEventListener("click", async e => {
     const passwordMatch = form.passwordMatch.value;
     const passwordsMatch = password == passwordMatch;
 
-    if (!form.reportValidity()) {
-        console.log("asd")
-        button.classList.remove("toggled");
+    let html = button.innerHTML;
+    button.innerHTML = `<span class="material-symbols-outlined">close</span>`
 
-        setTimeout(() => {
-            button.classList.add("toggled");
-        }, 600);
+    button.classList.remove("toggled");
 
-        return;
-    }
+    setTimeout(() => {
+        button.classList.add("toggled");
+        button.innerHTML = html;
+    }, 600);
 
     if (passwordsMatch) {
         let formData = new FormData(form);

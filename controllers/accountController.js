@@ -23,7 +23,7 @@ baseController.createAccount = async function (req, res) {
     const user = await checkForExistingEmail(email);
     // console.log(req.body)
     if (user.rows.length > 0) {
-        return res.status(401).send(JSON.stringify({ message: "This email is already in use!" }));
+        return res.status(400).send(JSON.stringify({ message: "This email is already in use!" }));
     }
 
     const newUser = await registerAccount(fname, lname, email, password);
@@ -57,14 +57,14 @@ baseController.signIn = async function (req, res) {
 
         if (user.rows.length == 0) {
             res.set("Content-Type", "application/json");
-            return res.status(200).send(JSON.stringify({ message: "Invalid username or password??" }));
+            return res.status(400).send(JSON.stringify({ message: "Invalid username or password" }));
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.rows[0].account_password);
 
         if (!isPasswordValid) {
             res.set("Content-Type", "application/json");
-            return res.status(200).send(JSON.stringify({ message: "Invalid username or password!!" }));
+            return res.status(400).send(JSON.stringify({ message: "Invalid username or password" }));
         }
 
         const options = {
