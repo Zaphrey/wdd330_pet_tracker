@@ -42,7 +42,9 @@ button.addEventListener("click", async e =>  {
         
         if (redirect) {
             window.location.href = redirect;
-        };
+        } else {
+            window.location.href = "/";
+        }
 
         return;
     } else {
